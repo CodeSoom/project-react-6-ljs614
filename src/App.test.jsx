@@ -8,9 +8,28 @@ import {
 
 import { render } from '@testing-library/react';
 
+import { useDispatch, useSelector } from 'react-redux';
+
 import App from './App';
 
+jest.mock('react-redux');
+
 describe('App', () => {
+  const dispatch = jest.fn();
+
+  beforeEach(() => {
+    dispatch.mockClear();
+
+    useDispatch.mockImplementation(() => dispatch);
+
+    useSelector.mockImplementation((selector) => selector({
+      loginFields: {
+        email: '',
+        password: '',
+      },
+    }));
+  });
+
   function renderApp({ path }) {
     return render((
       <MemoryRouter initialEntries={[path]}>
@@ -24,6 +43,14 @@ describe('App', () => {
       const { container } = renderApp({ path: '/' });
 
       expect(container).toHaveTextContent('Home');
+    });
+  });
+
+  context('with path /login', () => {
+    it('renders the login page', () => {
+      const { container } = renderApp({ path: '/login' });
+
+      expect(container).toHaveTextContent('Log In');
     });
   });
 });
