@@ -53,4 +53,12 @@ describe('App', () => {
       expect(container).toHaveTextContent('Log In');
     });
   });
+
+  context('with path /restaurants', () => {
+    it('renders the login page', () => {
+      const { container } = renderApp({ path: '/restaurants' });
+
+      expect(container).toHaveTextContent('Restaurants');
+    });
+  });
 });
